@@ -4,10 +4,10 @@ import {
   MessageActions,
   MessageContent,
 } from "@/components/prompt-kit/message"
-// Text morph markdown import removed
+import { TextEffect } from "@/components/motion-primitives/text-effect"
 import { cn } from "@/lib/utils"
 import { ArrowClockwise, Check, Copy } from "@phosphor-icons/react"
-import { useMemo } from "react"
+import { useMemo, useState, useEffect } from "react"
 
 type MessageAssistantProps = {
   children: string
@@ -26,25 +26,47 @@ export function MessageAssistant({
   copyToClipboard,
   onReload,
 }: MessageAssistantProps) {
-  // Use animation for the last message (which is typically streaming)
+  // Track when animation should be shown
   const shouldAnimate = isLast
+  const [showAnimation, setShowAnimation] = useState(false)
   
-  // Create custom variants for the text animation
+  // Animation variants for character-by-character animation
   const textAnimationVariants = useMemo(() => ({
-    initial: { opacity: 0, y: 3 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0 }
+    container: {
+      hidden: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        transition: {
+          staggerChildren: 0.008,
+          delayChildren: 0.01,
+        }
+      },
+    },
+    item: {
+      hidden: { opacity: 0, y: 3 },
+      visible: { 
+        opacity: 1, 
+        y: 0,
+        transition: {
+          type: "spring",
+          stiffness: 320,
+          damping: 25,
+          mass: 0.2,
+        }
+      },
+    }
   }), [])
-  
-  // Custom transition for smooth character animation
-  const textAnimationTransition = useMemo(() => ({
-    type: "spring",
-    stiffness: 320,
-    damping: 25,
-    mass: 0.2,
-    staggerChildren: 0.01,
-    delayChildren: 0.005
-  }), [])
+
+  // Start animation after a short delay when content is received
+  useEffect(() => {
+    if (shouldAnimate && children) {
+      const timer = setTimeout(() => {
+        setShowAnimation(true)
+      }, 100)
+      
+      return () => clearTimeout(timer)
+    }
+  }, [shouldAnimate, children])
 
   return (
     <Message
@@ -54,7 +76,20 @@ export function MessageAssistant({
       )}
     >
       <div className={cn("flex min-w-full flex-col gap-2", isLast && "pb-8")}>
-        {(
+        {shouldAnimate && showAnimation ? (
+          <div className="prose dark:prose-invert prose-p:text-[16px] prose-p:leading-[1.7] prose-p:font-normal prose-p:text-[#253b22] relative min-w-full bg-transparent p-0">
+            <TextEffect
+              per="char"
+              preset="fade"
+              variants={textAnimationVariants}
+              speedReveal={1.2}
+              speedSegment={1.2}
+              className="block"
+            >
+              {children}
+            </TextEffect>
+          </div>
+        ) : (
           <MessageContent
             className="prose dark:prose-invert prose-p:text-[16px] prose-p:leading-[1.7] prose-p:font-normal prose-p:text-[#253b22] relative min-w-full bg-transparent p-0"
             markdown={true}
