@@ -41,7 +41,11 @@ export function TextMorphMarkdown({
   }, [children])
 
   return (
-    <TextMorph className={className} {...props}>
+    <TextMorph 
+      className={className} 
+      preserveEmojis={true}
+      {...props}
+    >
       {plainText || children}
     </TextMorph>
   )
