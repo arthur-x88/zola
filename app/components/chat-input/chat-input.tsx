@@ -103,23 +103,23 @@ export function ChatInput({
       )}
       <div className="relative order-2 px-2 pb-3 sm:pb-4 md:order-1">
         <PromptInput
-          className="border-input bg-popover relative z-10 overflow-hidden border p-0 pb-2 shadow-xs backdrop-blur-xl"
+          className="border-input bg-white relative z-10 overflow-hidden border p-0 pb-2 shadow-xs backdrop-blur-xl"
           maxHeight={200}
           value={value}
           onValueChange={onValueChange}
         >
           <GlowEffect 
-            className="opacity-50"
+            className="opacity-70"
             colors={['#5D3FD3', '#8A2BE2', '#9370DB', '#6A5ACD']}
             mode="breathe" 
             blur="soft"
-            scale={1.1}
+            scale={1.05}
           />
           <FileList files={files} onFileRemove={onFileRemove} />
           <PromptInputTextarea
             placeholder={`Ask ${APP_NAME}`}
             onKeyDown={handleKeyDown}
-            className="mt-2 ml-2 min-h-[44px] text-base leading-[1.3] sm:text-base md:text-base placeholder:text-muted-foreground/60"
+            className="mt-2 ml-2 min-h-[44px] text-base leading-[1.3] sm:text-base md:text-base placeholder:text-muted-foreground/60 bg-transparent"
           />
           <PromptInputActions className="mt-5 w-full justify-between px-2">
             <div className="flex gap-2">
