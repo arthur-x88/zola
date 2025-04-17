@@ -52,7 +52,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       {!isDev ? (
         <Script
           async
@@ -69,8 +69,8 @@ export default async function RootLayout({
             <ChatSessionProvider>
               <ThemeProvider
                 attribute="class"
-                defaultTheme="light"
-                enableSystem
+                defaultTheme="dark"
+                enableSystem={false}
                 disableTransitionOnChange
               >
                 <Toaster position="top-center" />

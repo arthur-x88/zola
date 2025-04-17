@@ -3,6 +3,7 @@
 import { HistoryTrigger } from "@/app/components/history/history-trigger"
 import { AppInfoTrigger } from "@/app/components/layout/app-info/app-info-trigger"
 import { ButtonNewChat } from "@/app/components/layout/button-new-chat"
+import { ThemeToggle } from "@/app/components/layout/theme-toggle"
 import { UserMenu } from "@/app/components/layout/user-menu"
 import { useBreakpoint } from "@/app/hooks/use-breakpoint"
 import { useChatSession } from "@/app/providers/chat-session-provider"
@@ -91,6 +92,7 @@ export function Header() {
                 </Button>
               }
             />
+            <ThemeToggle />
             <AgentLink />
             <Link
               href="/auth"
@@ -104,6 +106,7 @@ export function Header() {
             <ButtonNewChat />
             <AgentLink />
             <HistoryTrigger />
+            <ThemeToggle />
             <UserMenu />
           </div>
         )}
