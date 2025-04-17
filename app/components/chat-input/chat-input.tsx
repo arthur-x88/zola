@@ -1,5 +1,6 @@
 "use client"
 
+import { GlowEffect } from "@/components/motion-primitives/glow-effect"
 import {
   PromptInput,
   PromptInputAction,
@@ -107,6 +108,13 @@ export function ChatInput({
           value={value}
           onValueChange={onValueChange}
         >
+          <GlowEffect 
+            className="opacity-50"
+            colors={['#5D3FD3', '#8A2BE2', '#9370DB', '#6A5ACD']}
+            mode="breathe" 
+            blur="soft"
+            scale={1.1}
+          />
           <FileList files={files} onFileRemove={onFileRemove} />
           <PromptInputTextarea
             placeholder={`Ask ${APP_NAME}`}
