@@ -52,7 +52,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en" className="dark" data-theme="dark" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       {!isDev ? (
         <Script
           async
@@ -71,6 +71,7 @@ export default async function RootLayout({
                 attribute="class"
                 defaultTheme="dark"
                 enableSystem={false}
+                forcedTheme="dark"
                 disableTransitionOnChange
               >
                 <Toaster position="top-center" />

@@ -1,3 +1,4 @@
+
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";
@@ -70,6 +71,7 @@
   );
 }
 
+/* Light theme */
 :root {
   --background: 60 30% 96%;
   --foreground: 120 10% 10%;
@@ -101,6 +103,7 @@
   --sidebar-ring: 120 30% 45%;
 }
 
+/* Dark theme */
 .dark {
   --background: 120 20% 10%;
   --foreground: 60 30% 95%;

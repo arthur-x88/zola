@@ -14,11 +14,7 @@ export function ThemeToggle() {
   // Avoid hydration mismatch by only showing the toggle after mount
   useEffect(() => {
     setMounted(true)
-    // Ensure dark theme is applied by default
-    if (!theme || theme === 'system') {
-      setTheme('dark')
-    }
-  }, [theme, setTheme])
+  }, [])
 
   if (!mounted) {
     return null
