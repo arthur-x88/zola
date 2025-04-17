@@ -171,19 +171,19 @@ export function SettingsContent({
         </div>
       </div>
 
-      {/* Model Selection */}
+      {/* Model Information */}
       <div className="border-border border-t">
         <div className="px-6 py-4">
-          <h3 className="mb-3 text-sm font-medium">Preferred Model</h3>
-          <div className="relative">
-            <ModelSelector
-              selectedModelId={selectedModelId}
-              setSelectedModelId={handleModelSelection}
-              className="w-full"
-            />
+          <h3 className="mb-3 text-sm font-medium">Current Model</h3>
+          <div className="flex items-center gap-2 text-sm">
+            {selectedModelId && (
+              <>
+                {MODELS_OPTIONS.find(m => m.id === selectedModelId)?.name || selectedModelId}
+              </>
+            )}
           </div>
           <p className="text-muted-foreground mt-2 text-xs">
-            This model will be used by default for new conversations
+            The application uses a pre-configured model for all conversations
           </p>
         </div>
       </div>

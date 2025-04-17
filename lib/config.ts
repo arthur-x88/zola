@@ -273,6 +273,7 @@ export const PROVIDERS_OPTIONS = [
   ...PROVIDERS_NOT_AVAILABLE,
 ] as Provider[]
 
+// Use GPT-4.1 Mini as the only model
 export const MODEL_DEFAULT = "gpt-4.1-mini"
 
 export const APP_NAME = "Madison"

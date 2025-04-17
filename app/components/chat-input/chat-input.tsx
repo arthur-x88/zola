@@ -13,7 +13,7 @@ import React, { useCallback } from "react"
 import { ButtonFileUpload } from "./button-file-upload"
 import { FileList } from "./file-list"
 import { PromptSystem } from "./prompt-system"
-import { SelectModel } from "./select-model"
+// import { SelectModel } from "./select-model" // Removed SelectModel import
 
 type ChatInputProps = {
   value: string
@@ -26,8 +26,8 @@ type ChatInputProps = {
   onFileRemove: (file: File) => void
   onSuggestion: (suggestion: string) => void
   hasSuggestions?: boolean
-  onSelectModel: (model: string) => void
-  selectedModel: string
+  // onSelectModel: (model: string) => void // Removed onSelectModel prop
+  selectedModel: string // Retained selectedModel for potential use in ButtonFileUpload
   isUserAuthenticated: boolean
   onSelectSystemPrompt: (systemPrompt: string) => void
   systemPrompt?: string
@@ -47,7 +47,6 @@ export function ChatInput({
   onFileRemove,
   onSuggestion,
   hasSuggestions,
-  onSelectModel,
   selectedModel,
   isUserAuthenticated,
   onSelectSystemPrompt,
@@ -120,11 +119,7 @@ export function ChatInput({
                 isUserAuthenticated={isUserAuthenticated}
                 model={selectedModel}
               />
-              <SelectModel
-                selectedModel={selectedModel}
-                onSelectModel={onSelectModel}
-                isUserAuthenticated={isUserAuthenticated}
-              />
+              {/* SelectModel component removed */}
             </div>
             <PromptInputAction
               tooltip={status === "streaming" ? "Stop" : "Send"}
