@@ -56,7 +56,7 @@ export function MessageAssistant({
       <div className={cn("flex min-w-full flex-col gap-2", isLast && "pb-8")}>
         {(
           <MessageContent
-            className="prose dark:prose-invert relative min-w-full bg-transparent p-0"
+            className="prose dark:prose-invert prose-p:text-[15px] prose-p:leading-[1.6] prose-p:font-medium prose-p:text-[#253b22] relative min-w-full bg-transparent p-0"
             markdown={true}
           >
             {children}

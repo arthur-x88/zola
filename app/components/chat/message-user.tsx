@@ -149,7 +149,7 @@ export function MessageUser({
         </div>
       ) : (
         <MessageContent
-          className="bg-accent relative max-w-[70%] rounded-3xl px-5 py-2.5"
+          className="bg-accent relative max-w-[70%] rounded-3xl px-5 py-3 text-[15px] leading-[1.5] font-medium"
           markdown={false}
           ref={contentRef}
         >

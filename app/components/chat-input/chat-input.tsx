@@ -104,14 +104,14 @@ export function ChatInput({
       <div className="relative order-2 px-2 pb-3 sm:pb-4 md:order-1">
         <div className="relative">
           <GlowEffect 
-            className="opacity-60"
-            colors={['#c9b797', '#d8c9b0', '#e6d9c2', '#f5edd4']}
+            className="opacity-70"
+            colors={['#c1d4b6', '#d3e2cc', '#e0ebd9', '#f2f7ef']}
             mode="breathe" 
             blur="soft"
             scale={1.05}
           />
           <PromptInput
-            className="relative z-10 overflow-hidden p-0 pb-2 shadow-xs backdrop-blur-xl bg-[#f9f6ef] border-0"
+            className="relative z-10 overflow-hidden p-0 pb-2 shadow-xs backdrop-blur-xl bg-[#f7f9f4] border-0"
             maxHeight={200}
             value={value}
             onValueChange={onValueChange}
@@ -120,7 +120,7 @@ export function ChatInput({
           <PromptInputTextarea
             placeholder={`Ask ${APP_NAME}`}
             onKeyDown={handleKeyDown}
-            className="mt-2 ml-2 min-h-[44px] text-base leading-[1.3] sm:text-base md:text-base placeholder:text-muted-foreground/60 bg-transparent"
+            className="mt-2 ml-2 min-h-[44px] text-base leading-[1.4] font-medium sm:text-base md:text-base placeholder:text-muted-foreground/60 bg-transparent"
           />
           <PromptInputActions className="mt-5 w-full justify-between px-2">
             <div className="flex gap-2">
