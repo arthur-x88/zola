@@ -97,10 +97,12 @@ function PromptInputTextarea({
   className,
   onKeyDown,
   disableAutosize = false,
+  placeholder = "",
   ...props
 }: PromptInputTextareaProps) {
   const { value, setValue, maxHeight, onSubmit, disabled } = usePromptInput()
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const [focused, setFocused] = useState(false)
 
   useEffect(() => {
     if (disableAutosize) return
@@ -120,22 +122,37 @@ function PromptInputTextarea({
     }
     onKeyDown?.(e)
   }
+  
+  // Hide the placeholder when the textarea is focused or has a value
+  const showCustomPlaceholder = !value && !focused && placeholder;
 
   return (
-    <Textarea
-      ref={textareaRef}
-      autoFocus
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      onKeyDown={handleKeyDown}
-      className={cn(
-        "text-primary min-h-[44px] w-full resize-none border-none bg-transparent shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
-        className
+    <div className="relative w-full">
+      {showCustomPlaceholder && (
+        <div className="pointer-events-none absolute left-0 top-0 flex items-center text-muted-foreground">
+          <span className="inline-flex bg-gradient-to-r from-primary via-muted-foreground to-primary bg-[length:200%_auto] bg-clip-text text-transparent animate-shimmer">
+            {placeholder}
+          </span>
+        </div>
       )}
-      rows={1}
-      disabled={disabled}
-      {...props}
-    />
+      <Textarea
+        ref={textareaRef}
+        autoFocus
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={handleKeyDown}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        className={cn(
+          "text-primary min-h-[44px] w-full resize-none border-none bg-transparent shadow-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
+          className
+        )}
+        rows={1}
+        disabled={disabled}
+        placeholder=""
+        {...props}
+      />
+    </div>
   )
 }
 
