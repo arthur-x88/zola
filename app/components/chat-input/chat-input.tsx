@@ -102,12 +102,7 @@ export function ChatInput({
         />
       )}
       <div className="relative order-2 px-2 pb-3 sm:pb-4 md:order-1">
-        <PromptInput
-          className="relative z-10 overflow-hidden p-0 pb-2 shadow-xs backdrop-blur-xl bg-white border-0"
-          maxHeight={200}
-          value={value}
-          onValueChange={onValueChange}
-        >
+        <div className="relative">
           <GlowEffect 
             className="opacity-70"
             colors={['#5D3FD3', '#8A2BE2', '#9370DB', '#6A5ACD']}
@@ -115,6 +110,12 @@ export function ChatInput({
             blur="soft"
             scale={1.05}
           />
+          <PromptInput
+            className="relative z-10 overflow-hidden p-0 pb-2 shadow-xs backdrop-blur-xl bg-white border-0"
+            maxHeight={200}
+            value={value}
+            onValueChange={onValueChange}
+          >
           <FileList files={files} onFileRemove={onFileRemove} />
           <PromptInputTextarea
             placeholder={`Ask ${APP_NAME}`}
@@ -154,6 +155,7 @@ export function ChatInput({
             </PromptInputAction>
           </PromptInputActions>
         </PromptInput>
+        </div>
       </div>
     </div>
   )
