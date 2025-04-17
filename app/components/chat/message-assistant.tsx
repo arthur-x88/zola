@@ -16,6 +16,7 @@ type MessageAssistantProps = {
   copied?: boolean
   copyToClipboard?: () => void
   onReload?: () => void
+  status?: "streaming" | "ready" | "submitted" | "error"
 }
 
 export function MessageAssistant({
@@ -25,46 +26,42 @@ export function MessageAssistant({
   copied,
   copyToClipboard,
   onReload,
+  status,
 }: MessageAssistantProps) {
-  // Track when animation should be shown
-  const shouldAnimate = isLast
+  // Track when animation should be shown - only animate the last message when it's streaming
+  const shouldAnimate = isLast && status === "streaming"
   const [showAnimation, setShowAnimation] = useState(false)
   
-  // Animation variants for character-by-character animation
+  // Animation variants for character-by-character animation that better simulates typing
   const textAnimationVariants = useMemo(() => ({
     container: {
-      hidden: { opacity: 0 },
+      hidden: { opacity: 1 }, // Start container visible to avoid flash
       visible: {
         opacity: 1,
         transition: {
-          staggerChildren: 0.008,
-          delayChildren: 0.01,
+          staggerChildren: 0.015, // Slightly slower for more natural typing feel
+          delayChildren: 0,      // No delay before starting
         }
       },
     },
     item: {
-      hidden: { opacity: 0, y: 3 },
+      hidden: { opacity: 0, y: 0 }, // Just hide the character, no vertical offset
       visible: { 
         opacity: 1, 
         y: 0,
         transition: {
-          type: "spring",
-          stiffness: 320,
-          damping: 25,
-          mass: 0.2,
+          type: "tween",         // Use tween for more consistent typing effect
+          duration: 0.05,        // Very quick transition per character
+          ease: "easeOut",
         }
       },
     }
   }), [])
 
-  // Start animation after a short delay when content is received
+  // Show animation immediately for streaming content
   useEffect(() => {
     if (shouldAnimate && children) {
-      const timer = setTimeout(() => {
-        setShowAnimation(true)
-      }, 100)
-      
-      return () => clearTimeout(timer)
+      setShowAnimation(true)
     }
   }, [shouldAnimate, children])
 
@@ -82,9 +79,11 @@ export function MessageAssistant({
               per="char"
               preset="fade"
               variants={textAnimationVariants}
-              speedReveal={1.2}
-              speedSegment={1.2}
-              className="block"
+              speedReveal={1.0}
+              speedSegment={1.0}
+              delay={0}
+              className="block whitespace-pre-wrap"
+              trigger={true} // Ensure animation starts immediately
             >
               {children}
             </TextEffect>

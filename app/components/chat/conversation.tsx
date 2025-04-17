@@ -53,7 +53,7 @@ export function Conversation({
               onDelete={onDelete}
               onEdit={onEdit}
               onReload={onReload}
-              hasScrollAnchor={hasScrollAnchor}
+              status={status} // Added status prop here
             >
               {message.content}
             </Message>
