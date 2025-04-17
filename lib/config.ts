@@ -276,10 +276,10 @@ export const PROVIDERS_OPTIONS = [
 // Use GPT-4.1 Mini as the only model
 export const MODEL_DEFAULT = "gpt-4.1-mini"
 
-export const APP_NAME = "Madison"
+export const APP_NAME = "Pi"
 export const APP_DOMAIN = "https://zola.chat"
 export const APP_DESCRIPTION =
-  "A personalized AI companion that adapts to your preferences and helps with whatever you need."
+  "Your personal AI assistant with a calm, minimalist interface to help with whatever you need."
 
 export const PERSONAS = [
   {
