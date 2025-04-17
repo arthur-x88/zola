@@ -273,12 +273,12 @@ export const PROVIDERS_OPTIONS = [
   ...PROVIDERS_NOT_AVAILABLE,
 ] as Provider[]
 
-export const MODEL_DEFAULT = "pixtral-large-latest"
+export const MODEL_DEFAULT = "gpt-4.1-mini"
 
-export const APP_NAME = "Zola"
+export const APP_NAME = "Madison"
 export const APP_DOMAIN = "https://zola.chat"
 export const APP_DESCRIPTION =
-  "Zola is a free, open-source AI chat app with multi-model support."
+  "A personalized AI companion that adapts to your preferences and helps with whatever you need."
 
 export const PERSONAS = [
   {
