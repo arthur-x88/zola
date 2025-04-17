@@ -71,7 +71,6 @@ export default async function RootLayout({
                 attribute="class"
                 defaultTheme="light"
                 enableSystem={false}
-                //forcedTheme="dark" //removed forcedTheme
                 disableTransitionOnChange
               >
                 <Toaster position="top-center" />
