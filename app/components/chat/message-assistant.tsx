@@ -4,7 +4,7 @@ import {
   MessageActions,
   MessageContent,
 } from "@/components/prompt-kit/message"
-import { TextMorphMarkdown } from "@/components/motion-primitives/text-morph-markdown"
+// Text morph markdown import removed
 import { cn } from "@/lib/utils"
 import { ArrowClockwise, Check, Copy } from "@phosphor-icons/react"
 import { useMemo } from "react"
@@ -54,16 +54,7 @@ export function MessageAssistant({
       )}
     >
       <div className={cn("flex min-w-full flex-col gap-2", isLast && "pb-8")}>
-        {shouldAnimate ? (
-          <div className="prose dark:prose-invert relative min-w-full bg-transparent p-0">
-            <TextMorphMarkdown
-              variants={textAnimationVariants}
-              transition={textAnimationTransition}
-            >
-              {children}
-            </TextMorphMarkdown>
-          </div>
-        ) : (
+        {(
           <MessageContent
             className="prose dark:prose-invert relative min-w-full bg-transparent p-0"
             markdown={true}
