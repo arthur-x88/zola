@@ -4,8 +4,10 @@ import {
   MessageActions,
   MessageContent,
 } from "@/components/prompt-kit/message"
+import { TextMorphMarkdown } from "@/components/motion-primitives/text-morph-markdown"
 import { cn } from "@/lib/utils"
 import { ArrowClockwise, Check, Copy } from "@phosphor-icons/react"
+import { useMemo } from "react"
 
 type MessageAssistantProps = {
   children: string
@@ -24,6 +26,26 @@ export function MessageAssistant({
   copyToClipboard,
   onReload,
 }: MessageAssistantProps) {
+  // Use animation for the last message (which is typically streaming)
+  const shouldAnimate = isLast
+  
+  // Create custom variants for the text animation
+  const textAnimationVariants = useMemo(() => ({
+    initial: { opacity: 0, y: 3 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0 }
+  }), [])
+  
+  // Custom transition for smooth character animation
+  const textAnimationTransition = useMemo(() => ({
+    type: "spring",
+    stiffness: 320,
+    damping: 25,
+    mass: 0.2,
+    staggerChildren: 0.01,
+    delayChildren: 0.005
+  }), [])
+
   return (
     <Message
       className={cn(
@@ -32,12 +54,23 @@ export function MessageAssistant({
       )}
     >
       <div className={cn("flex min-w-full flex-col gap-2", isLast && "pb-8")}>
-        <MessageContent
-          className="prose dark:prose-invert relative min-w-full bg-transparent p-0"
-          markdown={true}
-        >
-          {children}
-        </MessageContent>
+        {shouldAnimate ? (
+          <div className="prose dark:prose-invert relative min-w-full bg-transparent p-0">
+            <TextMorphMarkdown
+              variants={textAnimationVariants}
+              transition={textAnimationTransition}
+            >
+              {children}
+            </TextMorphMarkdown>
+          </div>
+        ) : (
+          <MessageContent
+            className="prose dark:prose-invert relative min-w-full bg-transparent p-0"
+            markdown={true}
+          >
+            {children}
+          </MessageContent>
+        )}
 
         <MessageActions
           className={cn(
