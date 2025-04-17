@@ -1,3 +1,4 @@
+
 "use client"
 
 import { Button } from "@/components/ui/button"
@@ -9,9 +10,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { signInWithGoogle } from "@/lib/api"
+import { Input } from "@/components/ui/input"
 import { createClient } from "@/lib/supabase/client"
 import { useState } from "react"
+import { toast } from "sonner"
 
 type DialogAuthProps = {
   open: boolean
@@ -20,23 +22,33 @@ type DialogAuthProps = {
 
 export function DialogAuth({ open, setOpen }: DialogAuthProps) {
   const [isLoading, setIsLoading] = useState(false)
+  const [email, setEmail] = useState("")
   const [error, setError] = useState<string | null>(null)
 
   const supabase = createClient()
 
-  const handleSignInWithGoogle = async () => {
+  const handleSignInWithEmail = async (e: React.FormEvent) => {
+    e.preventDefault()
     try {
       setIsLoading(true)
       setError(null)
 
-      const data = await signInWithGoogle(supabase)
+      const { data, error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`
+        }
+      })
 
-      // Redirect to the provider URL
-      if (data?.url) {
-        window.location.href = data.url
-      }
+      if (error) throw error
+      
+      toast.success("Check your email for the login link!", {
+        description: "We've sent a magic link to your email address."
+      })
+      setOpen(false)
+      
     } catch (err: any) {
-      console.error("Error signing in with Google:", err)
+      console.error("Error signing in with email:", err)
       setError(err.message || "An unexpected error occurred. Please try again.")
     } finally {
       setIsLoading(false)
@@ -59,24 +71,32 @@ export function DialogAuth({ open, setOpen }: DialogAuthProps) {
             {error}
           </div>
         )}
-        <DialogFooter className="mt-6 sm:justify-center">
-          <Button
-            variant="secondary"
-            className="w-full text-base"
-            size="lg"
-            onClick={handleSignInWithGoogle}
-            disabled={isLoading}
-          >
-            <img
-              src="https://www.google.com/favicon.ico"
-              alt="Google logo"
-              width={20}
-              height={20}
-              className="mr-2 size-4"
+        <form onSubmit={handleSignInWithEmail} className="space-y-4">
+          <div>
+            <label htmlFor="dialog-email" className="text-muted-foreground block text-sm font-medium mb-1">
+              Email Address
+            </label>
+            <Input
+              id="dialog-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="your@email.com"
+              required
             />
-            <span>{isLoading ? "Connecting..." : "Continue with Google"}</span>
-          </Button>
-        </DialogFooter>
+          </div>
+          <DialogFooter className="mt-6 sm:justify-center">
+            <Button
+              type="submit"
+              variant="secondary"
+              className="w-full text-base"
+              size="lg"
+              disabled={isLoading}
+            >
+              <span>{isLoading ? "Sending link..." : "Continue with Email"}</span>
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   )

@@ -1,36 +1,48 @@
+
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { PopoverContent } from "@/components/ui/popover"
 import React, { useState } from "react"
-import { signInWithGoogle } from "../../../lib/api"
 import { APP_NAME } from "../../../lib/config"
 import { createClient } from "../../../lib/supabase/client"
+import { toast } from "sonner"
 
 export function PopoverContentAuth() {
   const [isLoading, setIsLoading] = useState(false)
+  const [email, setEmail] = useState("")
   const [error, setError] = useState<string | null>(null)
 
   const supabase = createClient()
 
-  const handleSignInWithGoogle = async () => {
+  const handleSignInWithEmail = async (e: React.FormEvent) => {
+    e.preventDefault()
     try {
       setIsLoading(true)
       setError(null)
 
-      const data = await signInWithGoogle(supabase)
+      const { data, error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`
+        }
+      })
 
-      // Redirect to the provider URL
-      if (data?.url) {
-        window.location.href = data.url
-      }
+      if (error) throw error
+      
+      toast.success("Check your email for the login link!", {
+        description: "We've sent a magic link to your email address."
+      })
+      
     } catch (err: any) {
-      console.error("Error signing in with Google:", err)
+      console.error("Error signing in with email:", err)
       setError(err.message || "An unexpected error occurred. Please try again.")
     } finally {
       setIsLoading(false)
     }
   }
+
   return (
     <PopoverContent
       className="w-[300px] overflow-hidden rounded-xl p-0"
@@ -54,22 +66,25 @@ export function PopoverContentAuth() {
         <p className="text-muted-foreground mb-5 text-base">
           Add files, use more models, agents, and more.
         </p>
-        <Button
-          variant="secondary"
-          className="w-full text-base"
-          size="lg"
-          onClick={handleSignInWithGoogle}
-          disabled={isLoading}
-        >
-          <img
-            src="https://www.google.com/favicon.ico"
-            alt="Google logo"
-            width={20}
-            height={20}
-            className="mr-2 size-4"
+        <form onSubmit={handleSignInWithEmail} className="space-y-3">
+          <Input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="your@email.com"
+            required
+            className="text-sm"
           />
-          <span>{isLoading ? "Connecting..." : "Continue with Google"}</span>
-        </Button>
+          <Button
+            type="submit"
+            variant="secondary"
+            className="w-full text-base"
+            size="lg"
+            disabled={isLoading}
+          >
+            <span>{isLoading ? "Sending link..." : "Continue with Email"}</span>
+          </Button>
+        </form>
       </div>
     </PopoverContent>
   )

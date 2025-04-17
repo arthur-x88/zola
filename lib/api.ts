@@ -18,10 +18,10 @@ export async function createGuestUser(guestId: string) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: guestId }),
     })
-    
+
     // Always parse the response, even if there's an error
     const responseData = await res.json()
-    
+
     if (!res.ok) {
       console.error("Guest user creation failed:", responseData)
       throw new Error(
@@ -248,43 +248,20 @@ export async function updateChatModel(chatId: string, model: string) {
   }
 }
 
-/**
- * Signs in user with Google OAuth via Supabase
- */
-export async function signInWithGoogle(supabase: SupabaseClient) {
-  try {
-    const isDev = process.env.NODE_ENV === "development"
+export const signInWithEmail = async (supabase: any, email: string) => {
+  const { data, error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: `${window.location.origin}/auth/callback`,
+    },
+  })
 
-    // Get base URL dynamically (will work in both browser and server environments)
-    let baseUrl = isDev
-      ? "http://localhost:3000"
-      : typeof window !== "undefined"
-        ? window.location.origin
-        : process.env.NEXT_PUBLIC_VERCEL_URL
-          ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-          : APP_DOMAIN
-
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${baseUrl}/auth/callback`,
-        queryParams: {
-          access_type: "offline",
-          prompt: "consent",
-        },
-      },
-    })
-
-    if (error) {
-      throw error
-    }
-
-    // Return the provider URL
-    return data
-  } catch (err) {
-    console.error("Error signing in with Google:", err)
-    throw err
+  if (error) {
+    console.error("Error signing in with email:", error)
+    throw error
   }
+
+  return data
 }
 
 export const getOrCreateGuestUserId = async (
