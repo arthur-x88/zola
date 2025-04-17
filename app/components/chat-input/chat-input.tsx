@@ -104,14 +104,14 @@ export function ChatInput({
       <div className="relative order-2 px-2 pb-3 sm:pb-4 md:order-1">
         <div className="relative">
           <GlowEffect 
-            className="opacity-70"
-            colors={['#5D3FD3', '#8A2BE2', '#9370DB', '#6A5ACD']}
+            className="opacity-60"
+            colors={['#c9b797', '#d8c9b0', '#e6d9c2', '#f5edd4']}
             mode="breathe" 
             blur="soft"
             scale={1.05}
           />
           <PromptInput
-            className="relative z-10 overflow-hidden p-0 pb-2 shadow-xs backdrop-blur-xl bg-white border-0"
+            className="relative z-10 overflow-hidden p-0 pb-2 shadow-xs backdrop-blur-xl bg-[#f9f6ef] border-0"
             maxHeight={200}
             value={value}
             onValueChange={onValueChange}
