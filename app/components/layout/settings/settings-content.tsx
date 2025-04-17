@@ -59,9 +59,9 @@ export function SettingsContent({
   }
 
   const themes = [
-    { id: "system", name: "System", colors: ["#ffffff", "#1a1a1a"] },
-    { id: "light", name: "Light", colors: ["#ffffff"] },
+    { id: "light", name: "Light", colors: ["#f5f1e8"] },
     { id: "dark", name: "Dark", colors: ["#1a1a1a"] },
+    { id: "system", name: "System", colors: ["#f5f1e8", "#1a1a1a"] },
   ]
 
   if (!user) return null

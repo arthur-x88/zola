@@ -69,9 +69,9 @@ export default async function RootLayout({
             <ChatSessionProvider>
               <ThemeProvider
                 attribute="class"
-                defaultTheme="dark"
+                defaultTheme="light"
                 enableSystem={false}
-                forcedTheme="dark"
+                //forcedTheme="dark" //removed forcedTheme
                 disableTransitionOnChange
               >
                 <Toaster position="top-center" />
