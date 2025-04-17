@@ -120,7 +120,7 @@ export function ChatInput({
           <PromptInputTextarea
             placeholder={`Ask ${APP_NAME}`}
             onKeyDown={handleKeyDown}
-            className="mt-2 ml-2 min-h-[44px] text-base leading-[1.4] font-medium sm:text-base md:text-base placeholder:text-muted-foreground/60 bg-transparent"
+            className="mt-2 ml-2 min-h-[44px] text-base leading-[1.4] font-medium sm:text-base md:text-base placeholder:text-muted-foreground/60 bg-transparent focus:outline-none"
           />
           <PromptInputActions className="mt-5 w-full justify-between px-2">
             <div className="flex gap-2">
