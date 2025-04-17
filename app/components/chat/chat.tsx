@@ -23,7 +23,6 @@ import { API_ROUTE_CHAT } from "@/lib/routes"
 import { cn } from "@/lib/utils"
 import { useChat } from "@ai-sdk/react"
 import { AnimatePresence, motion } from "motion/react"
-import { TextShimmer } from "@/components/motion-primitives/text-shimmer"
 import dynamic from "next/dynamic"
 import { redirect, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
@@ -525,7 +524,7 @@ export function Chat() {
             }}
           >
             <h1 className="mb-6 text-3xl font-medium tracking-tight">
-              <TextShimmer>What's on your mind?</TextShimmer>
+              What's on your mind?
             </h1>
           </motion.div>
         ) : (
