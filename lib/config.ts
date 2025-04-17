@@ -273,7 +273,7 @@ export const PROVIDERS_OPTIONS = [
   ...PROVIDERS_NOT_AVAILABLE,
 ] as Provider[]
 
-export const MODEL_DEFAULT = "gpt-4.0"
+export const MODEL_DEFAULT = "gpt-4.1-nano"
 
 export const APP_NAME = "Madison"
 export const APP_DOMAIN = "https://zola.chat"
