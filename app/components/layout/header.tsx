@@ -66,7 +66,7 @@ export function Header() {
       <div className="bg-background relative mx-auto flex h-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:bg-transparent lg:px-8">
         {Boolean(!agent || !isMobile) && (
           <div className="flex-1">
-            <Link href="/" className="text-xl font-medium tracking-tight">
+            <Link href="/" className="text-xl font-medium tracking-tight dark:iridescent-text">
               {APP_NAME}
             </Link>
           </div>

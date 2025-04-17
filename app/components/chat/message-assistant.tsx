@@ -1,10 +1,11 @@
 import {
   Message,
-  MessageAction,
   MessageActions,
+  MessageAvatar,
   MessageContent,
 } from "@/components/prompt-kit/message"
-import { TextEffect } from "@/components/motion-primitives/text-effect"
+import { GlowEffect } from "@/components/motion-primitives/glow-effect"
+import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
 import { ArrowClockwise, Check, Copy } from "@phosphor-icons/react"
 import { useMemo, useState, useEffect } from "react"
@@ -31,7 +32,7 @@ export function MessageAssistant({
   // Track when animation should be shown - only animate the last message when it's streaming
   const shouldAnimate = isLast && status === "streaming"
   const [showAnimation, setShowAnimation] = useState(false)
-  
+
   // Animation variants for character-by-character animation that better simulates typing
   const textAnimationVariants = useMemo(() => ({
     container: {
@@ -65,13 +66,26 @@ export function MessageAssistant({
     }
   }, [shouldAnimate, children])
 
+  const { theme } = useTheme()
+  const isDarkMode = theme === 'dark'
+
   return (
     <Message
       className={cn(
-        "group flex w-full max-w-3xl flex-1 items-start gap-4 px-6 pb-2",
+        "group flex w-full max-w-3xl flex-1 items-start gap-4 px-6 pb-2 relative overflow-hidden",
         hasScrollAnchor && "min-h-scroll-anchor"
       )}
     >
+      {isDarkMode && (
+        <GlowEffect 
+          className="opacity-20 absolute inset-0 z-[-1]" 
+          colors={['#9D50BB', '#6E48AA', '#301934', '#4A235A', '#512E5F']} 
+          mode="colorShift" 
+          blur="strong" 
+          scale={1.5} 
+          duration={12}
+        />
+      )}
       <div className={cn("flex min-w-full flex-col gap-2", isLast && "pb-8")}>
         {shouldAnimate && showAnimation ? (
           <div className="prose dark:prose-invert prose-p:text-[16px] prose-p:leading-[1.7] prose-p:font-normal prose-p:text-[#253b22] relative min-w-full bg-transparent p-0">
