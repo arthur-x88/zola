@@ -249,10 +249,14 @@ export async function updateChatModel(chatId: string, model: string) {
 }
 
 export const signInWithEmail = async (supabase: any, email: string) => {
+  // Get the current origin for redirection
+  const currentOrigin = window.location.origin
+  
+  // Use the current origin for the redirect URL
   const { data, error } = await supabase.auth.signInWithOtp({
     email,
     options: {
-      emailRedirectTo: `${window.location.origin}/auth/callback`,
+      emailRedirectTo: `${currentOrigin}/auth/callback`,
     },
   })
 
