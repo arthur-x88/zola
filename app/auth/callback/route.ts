@@ -50,27 +50,14 @@ export async function GET(request: Request) {
     console.error("Unexpected user insert error:", err)
   }
 
-  // Get the host from headers
   const forwardedHost = request.headers.get("x-forwarded-host")
-  const host = request.headers.get("host")
-  
-  // Determine the base URL to use for redirection
-  let baseUrl
-  if (process.env.NODE_ENV === "development") {
-    // In development
-    baseUrl = origin
-  } else if (forwardedHost) {
-    // In production with forwarded host header (e.g., from a proxy)
-    baseUrl = `https://${forwardedHost}`
-  } else if (host) {
-    // Fallback to the host header
-    baseUrl = `https://${host}`
-  } else {
-    // Last resort fallback to origin
-    baseUrl = origin
-  }
+  const isLocal = process.env.NODE_ENV === "development"
 
-  const redirectUrl = `${baseUrl}${next}`
+  const redirectUrl = isLocal
+    ? `${origin}${next}`
+    : forwardedHost
+      ? `https://${forwardedHost}${next}`
+      : `${origin}${next}`
 
   return NextResponse.redirect(redirectUrl)
 }
