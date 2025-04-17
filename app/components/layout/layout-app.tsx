@@ -1,10 +1,13 @@
+
+"use client"
+
 import { cn } from "@/lib/utils"
 import { ReactNode } from "react"
 import { Header } from "./header"
 import { GlowEffect } from "@/components/motion-primitives/glow-effect"
 import { useTheme } from "next-themes"
 
-export async function LayoutApp({ children }: { children: React.ReactNode }) {
+export function LayoutApp({ children }: { children: React.ReactNode }) {
   const { theme } = useTheme()
   const isDarkMode = theme === 'dark'
 
