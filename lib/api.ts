@@ -18,8 +18,12 @@ export async function createGuestUser(guestId: string) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: guestId }),
     })
+    
+    // Always parse the response, even if there's an error
     const responseData = await res.json()
+    
     if (!res.ok) {
+      console.error("Guest user creation failed:", responseData)
       throw new Error(
         responseData.error ||
           `Failed to create guest user: ${res.status} ${res.statusText}`

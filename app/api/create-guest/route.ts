@@ -9,13 +9,35 @@ export async function POST(request: Request) {
         status: 400,
       })
     }
+    
     // Check if the user record already exists.
     let { data: userData } = await supabase
       .from("users")
       .select("*")
       .eq("id", userId)
       .maybeSingle()
+      
     if (!userData) {
+      // First create auth user (to satisfy foreign key constraint)
+      const { error: authError } = await supabase.auth.admin.createUser({
+        user_metadata: { anonymous: true },
+        email: `${userId}@anonymous.example`,
+        email_confirm: true,
+        id: userId,
+      })
+      
+      if (authError) {
+        console.error("Error creating auth user:", authError)
+        return new Response(
+          JSON.stringify({
+            error: "Failed to create guest auth user",
+            details: authError?.message,
+          }),
+          { status: 500 }
+        )
+      }
+      
+      // Now create the user record
       const { data, error } = await supabase
         .from("users")
         .insert({
@@ -28,6 +50,7 @@ export async function POST(request: Request) {
         })
         .select("*")
         .single()
+        
       if (error || !data) {
         console.error("Error creating guest user:", error)
         return new Response(
@@ -40,6 +63,7 @@ export async function POST(request: Request) {
       }
       userData = data
     }
+    
     return new Response(JSON.stringify({ user: userData }), { status: 200 })
   } catch (err: any) {
     console.error("Error in create-guest endpoint:", err)

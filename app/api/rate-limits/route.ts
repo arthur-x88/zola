@@ -29,7 +29,27 @@ export async function GET(req: Request) {
 
       // If guest user doesn't exist, create it
       if (!existingUser) {
-        await supabaseAdmin
+        // First create auth user (to satisfy foreign key constraint)
+        const { error: authError } = await supabaseAdmin.auth.admin.createUser({
+          user_metadata: { anonymous: true },
+          email: `${userId}@anonymous.example`,
+          email_confirm: true,
+          id: userId,
+        })
+        
+        if (authError) {
+          console.error("Error creating auth user in rate-limits:", authError)
+          return new Response(
+            JSON.stringify({
+              error: "Failed to create guest auth user",
+              details: authError?.message,
+            }),
+            { status: 500 }
+          )
+        }
+        
+        // Now create the user record
+        const { error: userError } = await supabaseAdmin
           .from("users")
           .insert({
             id: userId,
@@ -41,6 +61,17 @@ export async function GET(req: Request) {
             premium: false,
             created_at: new Date().toISOString(),
           })
+          
+        if (userError) {
+          console.error("Error creating user record in rate-limits:", userError)
+          return new Response(
+            JSON.stringify({
+              error: "Failed to create guest user record",
+              details: userError?.message,
+            }),
+            { status: 500 }
+          )
+        }
       }
     }
 
