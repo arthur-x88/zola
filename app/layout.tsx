@@ -52,7 +52,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" className="dark" data-theme="dark" suppressHydrationWarning>
       {!isDev ? (
         <Script
           async
