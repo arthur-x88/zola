@@ -12,14 +12,12 @@ export interface LoaderProps {
 
 export function TextDotsLoader({
   className,
-  text = "",
+  text = "Thinking",
   size = "md",
-  showText = false,
 }: {
   className?: string
   text?: string
   size?: "sm" | "md" | "lg"
-  showText?: boolean
 }) {
   const textSizes = {
     sm: "text-xs",
@@ -29,11 +27,9 @@ export function TextDotsLoader({
 
   return (
     <div className={cn("inline-flex items-center", className)}>
-      {showText && (
-        <span className={cn("text-primary font-base", textSizes[size])}>
-          {text}
-        </span>
-      )}
+      <span className={cn("text-primary font-base", textSizes[size])}>
+        {text}
+      </span>
       <span className="inline-flex">
         <span className="text-primary animate-[loading-dots_1.4s_infinite_0.2s]">
           .

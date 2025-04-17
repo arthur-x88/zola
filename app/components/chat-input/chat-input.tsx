@@ -1,6 +1,5 @@
 "use client"
 
-import { GlowEffect } from "@/components/motion-primitives/glow-effect"
 import {
   PromptInput,
   PromptInputAction,
@@ -10,8 +9,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { APP_NAME } from "@/lib/config"
 import { ArrowUp, Stop } from "@phosphor-icons/react"
-import React, { useCallback, useEffect, useState } from "react"
-import { useTheme } from "next-themes"
+import React, { useCallback } from "react"
 import { ButtonFileUpload } from "./button-file-upload"
 import { FileList } from "./file-list"
 import { PromptSystem } from "./prompt-system"
@@ -103,25 +101,17 @@ export function ChatInput({
         />
       )}
       <div className="relative order-2 px-2 pb-3 sm:pb-4 md:order-1">
-        <div className="relative">
-          <GlowEffect 
-            className="opacity-70"
-            colors={['#c1d4b6', '#d3e2cc', '#e0ebd9', '#f2f7ef']}
-            mode="breathe" 
-            blur="soft"
-            scale={1.05}
-          />
-          <PromptInput
-            className="relative z-10 overflow-hidden p-0 pb-2 shadow-xs backdrop-blur-xl bg-[#f7f9f4] border-0"
-            maxHeight={200}
-            value={value}
-            onValueChange={onValueChange}
-          >
+        <PromptInput
+          className="border-input bg-popover relative z-10 overflow-hidden border p-0 pb-2 shadow-xs backdrop-blur-xl"
+          maxHeight={200}
+          value={value}
+          onValueChange={onValueChange}
+        >
           <FileList files={files} onFileRemove={onFileRemove} />
           <PromptInputTextarea
             placeholder={`Ask ${APP_NAME}`}
             onKeyDown={handleKeyDown}
-            className="mt-2 ml-2 min-h-[44px] text-base leading-[1.4] font-medium sm:text-base md:text-base placeholder:text-muted-foreground/60 bg-transparent focus:outline-none"
+            className="mt-2 ml-2 min-h-[44px] text-base leading-[1.3] sm:text-base md:text-base"
           />
           <PromptInputActions className="mt-5 w-full justify-between px-2">
             <div className="flex gap-2">
@@ -156,7 +146,6 @@ export function ChatInput({
             </PromptInputAction>
           </PromptInputActions>
         </PromptInput>
-        </div>
       </div>
     </div>
   )

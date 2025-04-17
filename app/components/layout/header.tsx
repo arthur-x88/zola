@@ -3,7 +3,6 @@
 import { HistoryTrigger } from "@/app/components/history/history-trigger"
 import { AppInfoTrigger } from "@/app/components/layout/app-info/app-info-trigger"
 import { ButtonNewChat } from "@/app/components/layout/button-new-chat"
-import { ThemeToggle } from "@/app/components/layout/theme-toggle"
 import { UserMenu } from "@/app/components/layout/user-menu"
 import { useBreakpoint } from "@/app/hooks/use-breakpoint"
 import { useChatSession } from "@/app/providers/chat-session-provider"
@@ -66,7 +65,7 @@ export function Header() {
       <div className="bg-background relative mx-auto flex h-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:bg-transparent lg:px-8">
         {Boolean(!agent || !isMobile) && (
           <div className="flex-1">
-            <Link href="/" className="text-xl font-medium tracking-tight dark:iridescent-text">
+            <Link href="/" className="text-xl font-medium tracking-tight">
               {APP_NAME}
             </Link>
           </div>
@@ -92,7 +91,6 @@ export function Header() {
                 </Button>
               }
             />
-            <ThemeToggle />
             <AgentLink />
             <Link
               href="/auth"
@@ -106,7 +104,6 @@ export function Header() {
             <ButtonNewChat />
             <AgentLink />
             <HistoryTrigger />
-            <ThemeToggle />
             <UserMenu />
           </div>
         )}

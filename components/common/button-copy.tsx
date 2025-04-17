@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
+import { TextMorph } from "../motion-primitives/text-morph"
 
 type ButtonCopyProps = {
   code: string
@@ -24,7 +25,7 @@ export function ButtonCopy({ code }: ButtonCopyProps) {
       type="button"
       className="text-muted-foreground hover:bg-muted inline-flex items-center justify-center gap-1.5 rounded-md px-2 py-1 text-xs"
     >
-      <span>{hasCopyLabel ? "Copied" : "Copy"}</span>
+      <TextMorph as="span">{hasCopyLabel ? "Copied" : "Copy"}</TextMorph>
     </button>
   )
 }

@@ -1,14 +1,11 @@
 import {
   Message,
+  MessageAction,
   MessageActions,
-  MessageAvatar,
   MessageContent,
 } from "@/components/prompt-kit/message"
-import { GlowEffect } from "@/components/motion-primitives/glow-effect"
-import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
 import { ArrowClockwise, Check, Copy } from "@phosphor-icons/react"
-import { useMemo, useState, useEffect } from "react"
 
 type MessageAssistantProps = {
   children: string
@@ -17,7 +14,6 @@ type MessageAssistantProps = {
   copied?: boolean
   copyToClipboard?: () => void
   onReload?: () => void
-  status?: "streaming" | "ready" | "submitted" | "error"
 }
 
 export function MessageAssistant({
@@ -27,89 +23,21 @@ export function MessageAssistant({
   copied,
   copyToClipboard,
   onReload,
-  status,
 }: MessageAssistantProps) {
-  // Track when animation should be shown - only animate the last message when it's streaming
-  const shouldAnimate = isLast && status === "streaming"
-  const [showAnimation, setShowAnimation] = useState(false)
-
-  // Animation variants for character-by-character animation that better simulates typing
-  const textAnimationVariants = useMemo(() => ({
-    container: {
-      hidden: { opacity: 1 }, // Start container visible to avoid flash
-      visible: {
-        opacity: 1,
-        transition: {
-          staggerChildren: 0.015, // Slightly slower for more natural typing feel
-          delayChildren: 0,      // No delay before starting
-        }
-      },
-    },
-    item: {
-      hidden: { opacity: 0, y: 0 }, // Just hide the character, no vertical offset
-      visible: { 
-        opacity: 1, 
-        y: 0,
-        transition: {
-          type: "tween",         // Use tween for more consistent typing effect
-          duration: 0.05,        // Very quick transition per character
-          ease: "easeOut",
-        }
-      },
-    }
-  }), [])
-
-  // Show animation immediately for streaming content
-  useEffect(() => {
-    if (shouldAnimate && children) {
-      setShowAnimation(true)
-    }
-  }, [shouldAnimate, children])
-
-  const { theme } = useTheme()
-  const isDarkMode = theme === 'dark'
-
   return (
     <Message
       className={cn(
-        "group flex w-full max-w-3xl flex-1 items-start gap-4 px-6 pb-2 relative overflow-hidden",
+        "group flex w-full max-w-3xl flex-1 items-start gap-4 px-6 pb-2",
         hasScrollAnchor && "min-h-scroll-anchor"
       )}
     >
-      {isDarkMode && (
-        <GlowEffect 
-          className="opacity-20 absolute inset-0 z-[-1]" 
-          colors={['#9D50BB', '#6E48AA', '#301934', '#4A235A', '#512E5F']} 
-          mode="colorShift" 
-          blur="strong" 
-          scale={1.5} 
-          duration={12}
-        />
-      )}
       <div className={cn("flex min-w-full flex-col gap-2", isLast && "pb-8")}>
-        {shouldAnimate && showAnimation ? (
-          <div className="prose dark:prose-invert prose-p:text-[16px] prose-p:leading-[1.7] prose-p:font-normal prose-p:text-[#253b22] relative min-w-full bg-transparent p-0">
-            <TextEffect
-              per="char"
-              preset="fade"
-              variants={textAnimationVariants}
-              speedReveal={1.0}
-              speedSegment={1.0}
-              delay={0}
-              className="block whitespace-pre-wrap"
-              trigger={true} // Ensure animation starts immediately
-            >
-              {children}
-            </TextEffect>
-          </div>
-        ) : (
-          <MessageContent
-            className="prose dark:prose-invert prose-p:text-[16px] prose-p:leading-[1.7] prose-p:font-normal prose-p:text-[#253b22] relative min-w-full bg-transparent p-0"
-            markdown={true}
-          >
-            {children}
-          </MessageContent>
-        )}
+        <MessageContent
+          className="prose dark:prose-invert relative min-w-full bg-transparent p-0"
+          markdown={true}
+        >
+          {children}
+        </MessageContent>
 
         <MessageActions
           className={cn(
